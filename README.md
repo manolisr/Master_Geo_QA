@@ -1,7 +1,7 @@
 # NeuralGeoQA
 
 Geographic question answering over Wikidata using fine-tuned BERT and SPARQL templates.
-MSc Thesis — Department of Informatics and Telecommunications, NKUA
+MSc Thesis, Department of Informatics and Telecommunications, NKUA
 Supervisor: Prof. Manolis Koubarakis
 
 ---
