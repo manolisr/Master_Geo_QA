@@ -104,7 +104,7 @@ GeoQuestions1089 is heavily imbalanced — `E_class_near` has 307 examples, `B_d
 | Answer Accuracy (lenient) | 21.6% |
 
 QType accuracy on in-distribution held-out data: 67.1% (merged classes), 58.5% (fine-grained).
-Structured types (G_count, G_superlative, A_attribute) reach 91–100%. Spatial types are hardest — E_class_near reaches 2% in-distribution.
+Structured types (G_count, G_superlative, A_attribute) reach 91–100%. Spatial types are hardest, E_class_near reaches 2% in-distribution.
 
 **Root causes of errors:**
 
@@ -134,7 +134,7 @@ The primary failure is Wikidata data quality, not model errors. SPARQL structure
 | `notebooks/NeuralGeoQA_Train.ipynb` | Colab — preprocessing + Phase 1 + Phase 2 training (12 cells) |
 | `notebooks/NeuralGeoQA_Eval.ipynb` | Colab — full evaluation pipeline |
 
-**Note on preprocess.py:** The Flair/GloVe span detection runs once to annotate training data. It is not used at inference — BERT predicts spans directly from the question at runtime.
+**Note on preprocess.py:** The Flair/GloVe span detection runs once to annotate training data. It is not used at inference BERT predicts spans directly from the question at runtime.
 
 ---
 
@@ -262,7 +262,7 @@ python main.py ask \
 
 ## Future Work
 
-- Learned text-to-SPARQL (T5/BART) to replace hardcoded templates
+- Learned text to SPARQL (T5/BART) to replace hardcoded templates
 - Wikidata geospatial normalization layer
-- Spatial-aware embeddings
+- Spatial aware embeddings
 - Hybrid KG + LLM retrieval
