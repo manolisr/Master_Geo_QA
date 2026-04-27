@@ -128,13 +128,11 @@ The primary failure is Wikidata data quality, not model errors. SPARQL structure
 | File | Role |
 |------|------|
 | `preprocess.py` | Generates training labels: Wikidata label fetch + Flair/GloVe span detection |
-| `train.py` | Phase 1: dual-head bert-base-uncased on SimpleQuestions (span + relation) |
+| `train.py` | Full two-phase training: Phase 1 (span + relation on SimpleQuestions) and Phase 2 (QType head on GeoQuestions1089) |
 | `evaluate.py` | Full pipeline: loads GeoQABERT, entity linking, SPARQL templates, evaluation |
 | `main.py` | CLI entry point for all stages |
-| `notebooks/NeuralGeoQA_Train.ipynb` | Colab — preprocessing + Phase 1 training |
+| `notebooks/NeuralGeoQA_Train.ipynb` | Colab — preprocessing + Phase 1 + Phase 2 training (12 cells) |
 | `notebooks/NeuralGeoQA_Eval.ipynb` | Colab — full evaluation pipeline |
-
-**Note:** `train.py` covers Phase 1 only. Phase 2 (QType head fine-tuning, produces `best_model.pt`) is run separately and not yet in this repo. `evaluate.py` loads the Phase 2 output directly.
 
 **Note on preprocess.py:** The Flair/GloVe span detection runs once to annotate training data. It is not used at inference — BERT predicts spans directly from the question at runtime.
 
@@ -169,20 +167,34 @@ Output adds Wikidata labels + subject span word indices (Start_Subject, End_Subj
 
 ---
 
-### Training (Phase 1)
+### Training
+
+**Phase 1** — pretrain span + relation heads on Wikidata SimpleQuestions:
 
 ```bash
-python main.py train \
+python train.py phase1 \
   --base_dir /data/geoqa \
   --epochs 3 \
-  --batch_size 1 \
-  --accumulation_steps 8 \
+  --batch_size 16 \
   --lr 2e-5 \
-  --max_length 96 \
   --model_name bert-base-uncased
 ```
 
-Saves model checkpoints, per-epoch metrics, and test predictions.
+Saves encoder + span/relation weights to `phase1_output/final_model/`.
+
+**Phase 2** — freeze span/relation heads, train QType head on GeoQuestions1089:
+
+```bash
+python train.py phase2 \
+  --base_dir /data/geoqa \
+  --pretrained_dir /data/geoqa/phase1_output \
+  --train_file /data/geoqa/GEO/geo_train.tsv \
+  --epochs 15 \
+  --lr_encoder 2e-5 \
+  --lr_head 3e-4
+```
+
+Saves `qtype_model_v2/best_model.pt` + `config.json` + `tokenizer/` — the files `evaluate.py` loads directly.
 
 ---
 
@@ -244,14 +256,9 @@ python main.py ask \
 | Query generation | Pattern → templates | QType → templates |
 | Training data | None | 19,481 + 1,087 examples |
 
+
 ---
 
-## Remaining work
-
-- Phase 2 training code added to repo
-- GPT-4o baseline comparison
-- Full thesis document
-- GitHub repository
 
 ## Future directions
 
