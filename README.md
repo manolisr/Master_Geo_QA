@@ -56,7 +56,7 @@ Question
 
 ---
 
-## Two-phase training
+## Two phase training
 
 The neural model is `bert-base-uncased` with three prediction heads, trained in two phases.
 
@@ -70,7 +70,7 @@ The span head and relation head are trained jointly on 19,481 examples. The span
 | Span F1 | 89.7% |
 | Relation Accuracy | 95.3% |
 
-**Phase 2 — Fine-tune QType head on GeoQuestions1089**
+**Phase 2 Fine-tune QType head on GeoQuestions1089**
 
 The span and relation heads are frozen. A QType classification head is added and trained on 1,087 GeoQuestions with weighted cross-entropy. Class imbalance is handled two ways:
 
