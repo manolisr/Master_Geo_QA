@@ -260,7 +260,7 @@ python main.py ask \
 ---
 
 
-## Future directions
+## Future Work
 
 - Learned text-to-SPARQL (T5/BART) to replace hardcoded templates
 - Wikidata geospatial normalization layer
