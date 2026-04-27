@@ -169,7 +169,7 @@ Output adds Wikidata labels + subject span word indices (Start_Subject, End_Subj
 
 ### Training
 
-**Phase 1** — pretrain span + relation heads on Wikidata SimpleQuestions:
+**Phase 1** pretrain span + relation heads on Wikidata SimpleQuestions:
 
 ```bash
 python train.py phase1 \
@@ -182,7 +182,7 @@ python train.py phase1 \
 
 Saves encoder + span/relation weights to `phase1_output/final_model/`.
 
-**Phase 2** — freeze span/relation heads, train QType head on GeoQuestions1089:
+**Phase 2** freeze span/relation heads, train QType head on GeoQuestions1089:
 
 ```bash
 python train.py phase2 \
